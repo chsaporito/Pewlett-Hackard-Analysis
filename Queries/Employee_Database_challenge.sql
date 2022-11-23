@@ -16,7 +16,8 @@ WHERE (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31')
 order by e.emp_no;
 
 -- unique_titles table contains the most recent title of each employee.
-SELECT DISTINCT ON (emp_no) emp_no,
+SELECT DISTINCT ON (emp_no) 
+	emp_no,
 	first_name,
 	last_name,
 	title
@@ -27,8 +28,8 @@ ORDER BY emp_no, to_date DESC;
 
 --retiring_titles table holds the number of employees by their most recent job title who are about to retire
 SELECT 
-	COUNT(title) 
-	,title
+	COUNT(title), 
+	title
 INTO retiring_titles
 FROM unique_titles
 GROUP BY title
@@ -45,16 +46,33 @@ select DISTINCT ON (e.emp_no)
 	de.to_date,
 	t.title
 INTO mentorship_eligibilty
-from employees e
-join dept_emp de on de.emp_no =e.emp_no
-join titles t on t.emp_no =e.emp_no
+FROM employees e
+JOIN dept_emp de on de.emp_no =e.emp_no
+JOIN titles t on t.emp_no =e.emp_no
 WHERE t.to_date = '9999-01-01'
 AND e.birth_date BETWEEN '1965-01-01' AND '1965-12-31'
 order by e.emp_no ;
 
 
+--Additional queries
+--compairing mentorships count to retiring_titles count
+SELECT  
+	r.title as "Retiring Title", 
+	r.count, 
+	COALESCE(m.title,r.title) as "Mentor Title", 
+	COALESCE(m.count,0) 
+FROM retiring_titles r
+FULL OUTER JOIN mentorship_count m on m.title=r.title
+ORDER BY r.count DESC
 
-
+--create mentorship_count table
+SELECT 
+	COUNT(title) 
+	,title
+INTO mentorship_count
+FROM mentorship_eligibilty 
+GROUP BY title
+ORDER BY COUNT DESC;
 
 
 
