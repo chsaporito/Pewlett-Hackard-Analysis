@@ -1,6 +1,6 @@
 # Pewlett-Hackard-Analysis
 ## Overview of the analysis: 
-Explain the purpose of this analysis.
+This analisys is to discover how big of an impact retiring employees will have on Pewlett-Hackard.
 ## Results: 
 - When querying retirement ready employees, from the employees table, it was found that there were many duplicate employees due to changing titles over time. The employee table returned 133,776 employees with birthdates between 1952 and 1955.
 - When we queried for unique employees ready for retirement, there were 72,458 employees returned.
