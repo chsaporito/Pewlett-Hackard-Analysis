@@ -56,6 +56,13 @@ order by e.emp_no ;
 
 --Additional queries
 --compairing mentorships count to retiring_titles count
+SELECT 
+	COUNT(title), 
+	title
+FROM mentorship_eligibilty
+GROUP BY title
+ORDER BY COUNT DESC;
+
 SELECT  
 	r.title as "Retiring Title", 
 	r.count, 
@@ -74,8 +81,20 @@ FROM mentorship_eligibilty
 GROUP BY title
 ORDER BY COUNT DESC;
 
+--create department_counts table
+select  dept_no, Count(dept_no) as "Department Count" 
+into department_counts
+from dept_emp
+where to_date='9999-01-01'
+group by dept_no
 
 
 
-
-
+select 
+de.dept_no, 
+dc.dept_count, 
+count(de.dept_no) as "Retirement Count"
+from dept_emp de
+join  unique_titles ut on ut.emp_no = de.emp_no
+join department_counts dc on dc.dept_no = de.dept_no
+group by de.dept_no
